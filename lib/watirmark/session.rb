@@ -194,7 +194,8 @@ module Watirmark
 
     def new_watir_browser
       client = Selenium::WebDriver::Remote::Http::Default.new
-      client.timeout = config.http_timeout
+      client.open_timeout = config.http_timeout
+      client.read_timeout = config.http_timeout
 
       case config.webdriver.to_sym
       when :firefox, :firefox_proxy
@@ -238,7 +239,7 @@ module Watirmark
     end
 
     def initialize_page_checkers
-      POST_WAIT_CHECKERS.each { |p| Page.browser.add_checker p }
+      POST_WAIT_CHECKERS.each { |p| Page.browser.after_hooks.add p }
     end
 
   end

@@ -1,7 +1,7 @@
 watirmark
 =========
 
-An MVC test framework for watir-webdriver. 
+An MVC test framework for watir. 
 
 [![Build Status](https://secure.travis-ci.org/convio/watirmark.png)](http://travis-ci.org/convio/watirmark)
 

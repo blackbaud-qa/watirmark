@@ -89,15 +89,15 @@ describe Watirmark::WebPage::Controller do
     Page.browser.refresh #reset page before each test
   end
 
-  specify 'should supportradio maps in controllers' do
-    lambda {
+  specify 'should support radio maps in controllers' do
+    expect(lambda {
       TestProcessPageController.new(:radio_map => 'f').populate_data
-    }.should_not raise_error
+    }).not_to raise_error
   end
 
   specify 'should be able to create and use a new keyword' do
     TestView.new.send("#{@keyword}=", 'test')
-    expect { @controller.send(@keyword).value == 'text' }.to be_true
+    expect(@controller.send(@keyword).value == 'text').to be true
   end
 
   specify 'should be able to populate' do
@@ -112,13 +112,13 @@ describe Watirmark::WebPage::Controller do
         :another_text_field => 'nil'
     ).populate_data
     v = TestView.new
-    v.text_field.value.should == 'test'
-    v.select_list.value.should == 'b'
-    v.another_text_field.value.should == ''
+    expect(v.text_field.value).to eq('test')
+    expect(v.select_list.value).to eq('b')
+    expect(v.another_text_field.value).to eq('')
   end
 
   specify 'should be be able to interpret use value' do
-    @controller.value(@keyed_element).should == 'foobar'
+    expect(@controller.value(@keyed_element)).to eq('foobar')
   end
 
   specify 'should support override method to value' do
@@ -154,7 +154,7 @@ describe Watirmark::WebPage::Controller do
   end
 
   specify 'should propogate page declaration to subclasses' do
-    TestControllerSubclass.view.should == TestView
+    expect(TestControllerSubclass.view).to eq(TestView)
   end
 
   specify 'should support before methods for process pages' do
@@ -169,9 +169,9 @@ describe Watirmark::WebPage::Controller do
   end
 
   specify 'should throw a Watirmark::VerificationException when a verification fails' do
-    lambda {
+    expect(lambda {
       VerifyController.new(:validate1 => '2').verify_data
-    }.should raise_error(Watirmark::VerificationException, "validate1: expected '2' (String) got '1' (String)")
+    }).to raise_error(Watirmark::VerificationException, "validate1: expected '2' (String) got '1' (String)")
   end
 
   specify 'should not throw an exception when a verification succeeds' do
@@ -183,15 +183,15 @@ describe Watirmark::WebPage::Controller do
   end
 
   specify 'should only throw one validation exception when there are 3 three problems' do
-    lambda {
+    expect(lambda {
       VerifyController.new(:validate1 => 'z', :validate2 => 'y', :validate3 => 'x').verify_data
-    }.should raise_error(Watirmark::VerificationException)
+    }).to raise_error(Watirmark::VerificationException)
   end
 
   specify 'should throw an exception when verifying a verify_keyword fails' do
-    lambda {
+    expect(lambda {
       VerifyController.new(:label1 => 'text').verify_data
-    }.should raise_error(Watirmark::VerificationException, "label1: expected 'text' (String) got 'numbers' (String)")
+    }).to raise_error(Watirmark::VerificationException, "label1: expected 'text' (String) got 'numbers' (String)")
   end
 
   specify 'should not throw an exception when verifying a verify_keyword succeeds' do
@@ -203,9 +203,9 @@ describe Watirmark::WebPage::Controller do
   end
 
   specify 'should throw an exception when populating a populate_keyword fails' do
-    lambda {
+    expect(lambda {
       VerifyController.new(:populate2 => '32').populate_data
-    }.should raise_error(NoMethodError)
+    }).to raise_error(NoMethodError)
   end
 
   specify 'should not throw an exception when populating a populate_keyword succeeds' do
@@ -246,10 +246,10 @@ describe Watirmark::WebPage::Controller do
   specify 'false should be a valid keyword value' do
     c = VerifyController.new(:checkbox => true)
     c.populate_data
-    VerifyView.new.checkbox.set?.should == true
+    expect(VerifyView.new.checkbox.set?).to eq(true)
     c.model.update(:checkbox => false)
     c.populate_data
-    VerifyView.new.checkbox.set?.should == false
+    expect(VerifyView.new.checkbox.set?).to eq(false)
   end
 end
 
@@ -280,15 +280,15 @@ describe "controllers should be able to detect and use embedded models" do
   end
 
   specify 'should be able to see itself' do
-    @model.find(User).should == @model
+    expect(@model.find(User)).to eq(@model)
   end
 
   specify 'should be able to see a sub_model' do
-    @model.find(Login).should == @login
+    expect(@model.find(Login)).to eq @login
   end
 
   specify 'should be able to see a nested sub_model' do
-    @model.find(Password).should == @password
+    expect(@model.find(Password)).to eq @password
   end
 end
 
@@ -308,7 +308,7 @@ describe "controllers should create a default model if one exists" do
 
   specify 'should be able to see itself' do
     c = @controller.new
-    c.model.should be_kind_of(MyModel)
+    expect(c.model).to be_kind_of(MyModel)
   end
 end
 
@@ -390,56 +390,56 @@ describe "Similar Models" do
 
   specify 'should use the similar modelA' do
     @controller = TestProcessPageController.new(ModelD.new)
-    @controller.model.should be_kind_of ModelB
-    @controller.supermodel.should be_kind_of ModelD
+    expect(@controller.model).to be_kind_of(ModelB)
+    expect(@controller.supermodel).to be_kind_of(ModelD)
   end
 
   specify 'should use the top model' do
     @controller = TestProcessPageController.new(ModelB.new)
-    @controller.model.should be_kind_of ModelB
-    @controller.supermodel.should be_kind_of ModelB
+    expect(@controller.model).to be_kind_of(ModelB)
+    expect(@controller.supermodel).to be_kind_of(ModelB)
   end
 
   specify 'should use parent model' do
     @controller = TestProcessPageController.new(ModelC.new)
-    @controller.model.should be_kind_of ModelA
-    @controller.supermodel.should be_kind_of ModelC
+    expect(@controller.model).to be_kind_of(ModelA)
+    expect(@controller.supermodel).to be_kind_of(ModelC)
   end
 
   specify 'should call the smallest child similar to the model in controller' do
     @controller = TestProcessPageController.new(ModelE.new)
-    @controller.model.should be_kind_of ModelB
-    @controller.supermodel.should be_kind_of ModelE
+    expect(@controller.model).to be_kind_of(ModelB)
+    expect(@controller.supermodel).to be_kind_of(ModelE)
 
   end
 
   specify 'should select the correct model when base model has 2 similar models' do
     @controller = TestProcessPageController.new(ModelG.new)
-    @controller.model.should be_kind_of ModelF
-    @controller.supermodel.should be_kind_of ModelG
+    expect(@controller.model).to be_kind_of(ModelF)
+    expect(@controller.supermodel).to be_kind_of(ModelG)
 
     @controller = TestProcessPageController.new(ModelF.new)
-    @controller.model.should be_kind_of ModelF
-    @controller.supermodel.should be_kind_of ModelF
+    expect(@controller.model).to be_kind_of(ModelF)
+    expect(@controller.supermodel).to be_kind_of(ModelF)
   end
 
   specify 'should use the supermodel as a model if a controller model is not defined' do
     @controller = TestNoModelController.new(ModelE.new)
-    @controller.model.should be_kind_of ModelE
-    @controller.supermodel.should be_kind_of ModelE
+    expect(@controller.model).to be_kind_of(ModelE)
+    expect(@controller.supermodel).to be_kind_of(ModelE)
   end
 
   specify 'should use passed in model as @model when model_type is not defined' do
     @controller = TestProcessPageController.new(ModelH.new)
-    @controller.model.should be_kind_of ModelH
-    @controller.supermodel.should be_kind_of ModelH
+    expect(@controller.model).to be_kind_of(ModelH)
+    expect(@controller.supermodel).to be_kind_of(ModelH)
   end
 
   specify 'should allow us to override the default model' do
     @controller = TestProcessPageController.new(ModelH.new)
-    @controller.model.should be_kind_of ModelH
+    expect(@controller.model).to be_kind_of(ModelH)
     @controller.model = ModelA.new
-    @controller.model.should be_kind_of ModelA
+    expect(@controller.model).to be_kind_of(ModelA)
   end
 
 end

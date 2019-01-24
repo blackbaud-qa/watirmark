@@ -35,50 +35,50 @@ describe 'Page' do
   end
 
   it "should handle empty keywords gracefully" do
-    @page6.keywords.should == []
+    expect(@page6.keywords).to eq([])
   end
 
   it "should list its keywords" do
-    @page1.keywords.should == [:a, :b]
-    @page2.keywords.should == [:c]
+    expect(@page1.keywords).to eq([:a, :b])
+    expect(@page2.keywords).to eq([:c])
   end
 
   it "should list its parent's keywords" do
-    @page5.keywords.should == [:a, :b, :i]
+    expect(@page5.keywords).to eq([:a, :b, :i])
   end
 
 
   it "should list its own keywords" do
-    @page5.native_keywords.should == [:i]
+    expect(@page5.native_keywords).to eq([:i])
   end
 
 
   it "should list populate and verify keywords" do
-    @page3.keywords.should == [:d, :e]
+    expect(@page3.keywords).to eq([:d, :e])
   end
 
   it 'should create a method for the keyword' do
-    @page1.a.should == 'a'
-    @page2.c.should == 'c'
-    @page4.h.should == 'h'
+    expect(@page1.a).to eq('a')
+    expect(@page2.c).to eq('c')
+    expect(@page4.h).to eq('h')
   end
 
   it 'should be able to get and set the browser' do
     old_browser = Page.browser
     begin
       Page.browser = 'browser'
-      Page1.new.browser.should == 'browser'
-      Page2.new.browser.should == 'browser'
-      Page3.new.browser.should == 'browser'
-      Page4.new.browser.should == 'browser'
+      expect(Page1.new.browser).to eq('browser')
+      expect(Page2.new.browser).to eq('browser')
+      expect(Page3.new.browser).to eq('browser')
+      expect(Page4.new.browser).to eq('browser')
     ensure
       Page.browser = old_browser
     end
   end
 
   it 'should not leak keywords to other classes' do
-    lambda { @page2.a }.should raise_error
-    lambda { @page1.c }.should raise_error
+    expect(lambda { @page2.a }).to raise_error
+    expect(lambda { @page1.c }).to raise_error
   end
 
   it 'should support aliasing keywords' do
@@ -86,8 +86,8 @@ describe 'Page' do
       keyword_alias :aliased_keyword, :a
     end
     page1 = Page1.new
-    page1.a.should == 'a'
-    page1.aliased_keyword.should == 'a'
+    expect(page1.a).to eq('a')
+    expect(page1.aliased_keyword).to eq('a')
   end
 end
 
@@ -112,21 +112,21 @@ describe "keyword metadata inheritance" do
 
   it 'should get declared keywords' do
     parent = Parent.new
-    parent.keywords.should == [:a, :b, :same]
+    expect(parent.keywords).to eq([:a, :b, :same])
   end
 
   it 'should allow child to override superclass' do
     child = Child.new
-    child.keywords.sort_by { |k| k.to_s }.should == [:a, :b, :c, :same]
-    child.a.should == "a"
-    child.same.should == 'c1-child'
+    expect(child.keywords.sort_by { |k| k.to_s }).to eq([:a, :b, :c, :same])
+    expect(child.a).to eq("a")
+    expect(child.same).to eq('c1-child')
   end
 
   it 'should not bleed settings between children' do
     child2 = Child2.new
-    child2.keywords.sort_by { |k| k.to_s }.should == [:a, :b, :g, :same]
-    child2.g.should == 'g'
-    child2.same.should == 'c1'
+    expect(child2.keywords.sort_by { |k| k.to_s }).to eq([:a, :b, :g, :same])
+    expect(child2.g).to eq('g')
+    expect(child2.same).to eq('c1')
   end
 end
 

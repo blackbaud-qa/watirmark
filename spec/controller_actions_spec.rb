@@ -83,20 +83,20 @@ describe Watirmark::Actions do
 
   it 'records should be cleared after run' do
     controller = ActionController.new
-    controller.records.should == []
+    expect(controller.records).to eq ([])
     controller.records << {a: 1, b: 2}
     controller.records << {c: 3, d: 4}
-    controller.records.should == [{a: 1, b: 2}, {c: 3, d: 4}]
+    expect(controller.records).to eq ([{a: 1, b: 2}, {c: 3, d: 4}])
     controller.run :create
-    controller.records.should == []
+    expect(controller.records).to eq ([])
   end
 
   it 'records can be assigned models' do
     controller = ActionController.new
     controller.records << ModelOpenStruct.new(:a => 1, :b => 2)
     controller.run :create
-    controller.model.a.should == 1
-    controller.model.b.should == 2
+    expect(controller.model.a).to eq (1)
+    expect(controller.model.b).to eq (2)
   end
 
   it 'records should be processed separately when models are given' do
@@ -104,10 +104,11 @@ describe Watirmark::Actions do
     controller.records << ModelOpenStruct.new(:a => 1, :b => 2)
     controller.records << ModelOpenStruct.new(:c => 3, :d => 4)
     controller.run :create
-    controller.model.a.should == nil
-    controller.model.b.should == nil
-    controller.model.c.should == 3
-    controller.model.d.should == 4
+    expect(controller.model.a).to eq (nil)
+    expect(controller.model.b).to eq (nil)
+    expect(controller.model.c).to eq (3)
+    expect(controller.model.d).to eq (4)
+
   end
 
   it 'run can accept a block for the stop_until methods' do
@@ -149,6 +150,6 @@ describe Watirmark::Actions do
   end
 
   it 'should not throw an exception if populate_data is overridden' do
-    lambda { ControllerActionsTest::ActionCreateControllerWithOverride.new.create }.should_not raise_error
+    expect(lambda { ControllerActionsTest::ActionCreateControllerWithOverride.new.create }).not_to raise_error
   end
 end

@@ -27,8 +27,8 @@ describe "controllers should be able to detect and use embedded models" do
       @model = CMUser
       @view = MyView
     end
-    controller.new(@user).model.should == @user
-    controller.new(@user).model.should_not == @login
+    expect(controller.new(@user).model).to eq(@user)
+    expect(controller.new(@user).model).not_to eq(@login)
   end
 
   it 'should be able to find a nested model on initialization' do
@@ -36,8 +36,8 @@ describe "controllers should be able to detect and use embedded models" do
       @model = CMLogin
       @view = MyView
     end
-    controller.new(@user).model.should_not == @user
-    controller.new(@user).model.should == @login
+    expect(controller.new(@user).model).not_to eq(@user)
+    expect(controller.new(@user).model).to eq(@login)
   end
 
   it 'should be able to find a deeply nested model on initialization' do
@@ -45,8 +45,8 @@ describe "controllers should be able to detect and use embedded models" do
       @model = CMPassword
       @view = MyView
     end
-    controller.new(@user).model.should_not == @user
-    controller.new(@user).model.should_not == @login
-    controller.new(@user).model.should == @password
+    expect(controller.new(@user).model).not_to eq(@user)
+    expect(controller.new(@user).model).not_to eq(@login)
+    expect(controller.new(@user).model).to eq(@password)
   end
 end

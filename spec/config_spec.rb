@@ -10,27 +10,27 @@ describe "text file" do
   end
 
  specify 'string' do
-   @config.string.should == "foo"
+   expect(@config.string).to eq("foo")
  end
 
  specify 'true_boolean' do
-   @config.true_boolean.should == true
+   expect(@config.true_boolean).to eq(true)
  end
 
  specify 'false_boolean' do
-   @config.false_boolean.should == false
+   expect(@config.false_boolean).to eq(false)
  end
 
  specify 'symbol' do
-   @config.symbol.should == :foo
+   expect(@config.symbol).to eq(:foo)
  end
 
  specify 'integer' do
-   @config.integer.should == 3
+   expect(@config.integer).to eq(3)
  end
 
  specify 'float' do
-   @config.float.should == 1.2
+   expect(@config.float).to eq(1.2)
  end
 end
 
@@ -44,27 +44,27 @@ describe "yaml file" do
   end
 
   specify 'string' do
-    @config.string.should == "foo"
+    expect(@config.string).to eq("foo")
   end
 
   specify 'true_boolean' do
-    @config.true_boolean.should == true
+    expect(@config.true_boolean).to eq(true)
   end
 
   specify 'false_boolean' do
-    @config.false_boolean.should == false
+    expect(@config.false_boolean).to eq(false)
   end
 
   specify 'symbol' do
-    @config.symbol.should == :foo
+    expect(@config.symbol).to eq(:foo)
   end
 
   specify 'integer' do
-    @config.integer.should == 3
+    expect(@config.integer).to eq(3)
   end
 
   specify 'float' do
-    @config.float.should == 1.2
+    expect(@config.float).to eq(1.2)
   end
 end
 
@@ -76,15 +76,15 @@ describe "configuration" do
   end
 
   specify 'add defaults' do
-    @config.email.should == 'devnull'
-    @config.webdriver.should == 'firefox'
+    expect(@config.email).to eq('devnull')
+    expect(@config.webdriver).to eq('firefox')
     @config.defaults = {:email => 'email-changed'}
-    @config.email.should == 'email-changed'
-    @config.webdriver.should == 'firefox'
+    expect(@config.email).to eq('email-changed')
+    expect(@config.webdriver).to eq('firefox')
   end
 
   specify 'inspect' do
-    @config.inspect.should =~ /^{.+}/
+    expect(@config.inspect).to match(/^{.+}/)
   end
 
 end

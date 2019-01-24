@@ -5,7 +5,7 @@ $: << File.expand_path(lib_dir + '/watirmark/cucumber')
 ENV['WEBDRIVER'] = 'firefox'
 
 
-require 'rspec/autorun'
+require 'rspec'
 require 'watirmark'
 require 'watirmark/configuration'
 require 'watirmark/cucumber/email_helper'

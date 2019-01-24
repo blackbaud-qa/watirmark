@@ -32,26 +32,26 @@ describe Watirmark::Assertions do
     element = stub(:exists? => true, :value => '$25')
     assert_equal element, '25'
     assert_equal element, '$25'
-    lambda { assert_equal element, '25%' }.should raise_error
+    expect(lambda { assert_equal element, '25%' }).to raise_error
   end
 
   it 'symbol in wrong place needs to match exactly or fail' do
     element = stub(:exists? => true, :value => '25$')
-    lambda { assert_equal element, '$25' }.should raise_error
+    expect(lambda { assert_equal element, '$25' }).to raise_error
     assert_equal element, '25$'
 
     element = stub(:exists? => true, :value => '%50')
-    lambda { assert_equal element, '50%' }.should raise_error
-    lambda { assert_equal element, '50' }.should raise_error
+    expect(lambda { assert_equal element, '50%' }).to raise_error
+    expect(lambda { assert_equal element, '50' }).to raise_error
     assert_equal element, '%50'
   end
 
   it 'should detect two different numbers are different' do
     element = stub(:exists? => true, :value => '50')
-    lambda { assert_equal element, '51' }.should raise_error
-    lambda { assert_equal element, '50.1' }.should raise_error
-    lambda { assert_equal element, 49.9 }.should raise_error
-    lambda { assert_equal element, 49 }.should raise_error
+    expect(lambda { assert_equal element, '51' }).to raise_error
+    expect(lambda { assert_equal element, '50.1' }).to raise_error
+    expect(lambda { assert_equal element, 49.9 }).to raise_error
+    expect(lambda { assert_equal element, 49 }).to raise_error
     assert_equal element, 50.0
   end
 
@@ -68,28 +68,27 @@ describe Watirmark::Assertions do
     element = stub(:exists? => true, :value => '37%', :name => 'unittest')
     assert_equal element, '37.00'
   end
-
 end
 
 describe "normalize_values" do
   include Watirmark::Assertions
 
   specify 'normalize dates' do
-    normalize_value("1/1/2012").should == Date.parse('1/1/2012')
-    normalize_value("1/1/09").should == Date.parse('1/1/09')
-    normalize_value("01/1/09").should == Date.parse('1/1/09')
-    normalize_value("01/01/09").should == Date.parse('1/1/09')
+    expect(normalize_value("1/1/2012")).to eq(Date.parse('1/1/2012'))
+    expect(normalize_value("1/1/09")).to eq(Date.parse('1/1/09'))
+    expect(normalize_value("01/1/09")).to eq(Date.parse('1/1/09'))
+    expect(normalize_value("01/01/09")).to eq(Date.parse('1/1/09'))
   end
   specify 'normalize whitespace' do
-    normalize_value(" a").should == "a"
-    normalize_value("a ").should == "a"
-    normalize_value("a\n").should == "a"
-    normalize_value("\na").should == "a"
-    normalize_value(" a \nb").should == "a \nb"
-    normalize_value(" a \r\nb").should == "a \nb"
-    normalize_value(" a \nb\n").should == "a \nb"
+    expect(normalize_value(" a")).to eq("a")
+    expect(normalize_value("a ")).to eq("a")
+    expect(normalize_value("a\n")).to eq("a")
+    expect(normalize_value("\na")).to eq("a")
+    expect(normalize_value(" a \nb")).to eq("a \nb")
+    expect(normalize_value(" a \r\nb")).to eq("a \nb")
+    expect(normalize_value(" a \nb\n")).to eq("a \nb")
   end
   specify 'do not normalize string of spaces' do
-    normalize_value('     ').should == '     '
+    expect(normalize_value('     ')).to eq('     ')
   end
 end

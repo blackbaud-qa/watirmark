@@ -57,32 +57,32 @@ describe "Traits" do
   specify "should have different last names" do
     a = FactoryTest::TraitsA.new
     b = FactoryTest::TraitsB.new
-    a.middle_name.should_not == b.middle_name
+    expect(a.middle_name).not_to eq(b.middle_name)
   end
 
   specify "should have same first names" do
     a = FactoryTest::TraitsA.new
     b = FactoryTest::TraitsB.new
-    a.first_name.should == b.first_name
+    expect(a.first_name).to eq(b.first_name)
   end
 
   specify "should have same last name but with different UUID" do
     a = FactoryTest::TraitsA.new
     b = FactoryTest::TraitsB.new
-    a.last_name.should include "last"
-    b.last_name.should include "last"
-    a.last_name.should_not == b.last_name
+    expect(a.last_name).to include("last")
+    expect(b.last_name).to include("last")
+    expect(a.last_name).not_to eq(b.last_name)
   end
 
   specify "should have same credit card number" do
     a = FactoryTest::TraitsA.new
     b = FactoryTest::TraitsB.new
-    a.cardnumber.should == b.cardnumber
+    expect(a.cardnumber).to eq(b.cardnumber)
   end
 
   specify "defaults should take precedence over traits" do
-    FactoryTest::TraitsC.new.first_name.should == "C"
-    FactoryTest::TraitsD.new.first_name.should == "D"
+    expect(FactoryTest::TraitsC.new.first_name).to eq("C")
+    expect(FactoryTest::TraitsD.new.first_name).to eq("D")
   end
 end
 
@@ -129,18 +129,18 @@ describe "Nested Traits" do
   specify "should have different first and last name" do
     jim = FactoryTest::Jim.new
     jane = FactoryTest::Jane.new
-    jim.first_name.should_not == jane.first_name
-    jim.last_name.should_not == jane.last_name
+    expect(jim.first_name).not_to eq(jane.first_name)
+    expect(jim.last_name).not_to eq(jane.last_name)
   end
 
   specify "should have same address due to same trait" do
     jim = FactoryTest::Jim.new
     jane = FactoryTest::Jane.new
-    jim.donor_address.should == "123 Sunset St"
-    jim.donor_state.should == "TX"
-    jim.donor_address.should == jim.donor_address
-    jim.donor_state.should == jim.donor_state
-    jane.credit_card.should == 4111111111111111
+    expect(jim.donor_address).to eq("123 Sunset St")
+    expect(jim.donor_state).to eq("TX")
+    expect(jim.donor_address).to eq(jim.donor_address)
+    expect(jim.donor_state).to eq(jim.donor_state)
+    expect(jane.credit_card).to eq(4111111111111111)
   end
 end
 

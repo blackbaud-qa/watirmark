@@ -1,20 +1,20 @@
 require_relative 'spec_helper'
 
 describe 'ProcessPage' do
-  
+
   it 'should implement a process page interface' do
-    lambda{Watirmark::ProcessPage.new('pp')}.should_not raise_error
+    expect(lambda{Watirmark::ProcessPage.new('pp')}).not_to raise_error
   end
-  
+
   it 'should support an activate method' do
     p = Watirmark::ProcessPage.new('pp')
-    lambda{p.activate}.should_not raise_error
+    expect(lambda{p.activate}).not_to raise_error
   end
-  
+
 end
 
 describe 'Process Page Views' do
-  
+
   before :all do
     class ProcessPageTest < Watirmark::Page
       keyword(:a) {'a'}
@@ -90,71 +90,71 @@ describe 'Process Page Views' do
     @processpagesubclass = ProcessPageSubclassView.new
     @processpagecustomnav = ProcessPageCustomNav.new
   end
- 
+
   it 'should only activate process_page when in the closure' do
-    @processpagetest.a.should == 'a'
-    @processpagetest.b.should == 'b'
-    @processpagetest.c.should == 'c'
-    @processpagetest.d.should == 'd'
-    @processpagetest.e.should == 'e'
-    @processpagetest.keywords.should == [:a,:b,:c,:d,:e]
+    expect(@processpagetest.a).to eq('a')
+    expect(@processpagetest.b).to eq('b')
+    expect(@processpagetest.c).to eq('c')
+    expect(@processpagetest.d).to eq('d')
+    expect(@processpagetest.e).to eq('e')
+    expect(@processpagetest.keywords).to eq([:a,:b,:c,:d,:e])
   end
-  
+
   it 'should show all keywords for a given process page' do
-    @processpagetest.process_page('ProcessPage 1').keywords.should == [:b]
-    @processpagetest.process_page('ProcessPage 2').keywords.should == [:c, :d]
+    expect(@processpagetest.process_page('ProcessPage 1').keywords).to eq([:b])
+    expect(@processpagetest.process_page('ProcessPage 2').keywords).to eq([:c, :d])
   end
-  
+
   it 'should activate the nested process_page where appropriate' do
-    @nestedprocesspagetest.a.should == 'a'
-    @nestedprocesspagetest.b.should == 'b'
-    @nestedprocesspagetest.b1.should == 'b1'
-    @nestedprocesspagetest.b2.should == 'b2'
-    @nestedprocesspagetest.b3.should == 'b3'
-    @nestedprocesspagetest.c.should == 'c'
+    expect(@nestedprocesspagetest.a).to eq('a')
+    expect(@nestedprocesspagetest.b).to eq('b')
+    expect(@nestedprocesspagetest.b1).to eq('b1')
+    expect(@nestedprocesspagetest.b2).to eq('b2')
+    expect(@nestedprocesspagetest.b3).to eq('b3')
+    expect(@nestedprocesspagetest.c).to eq('c')
   end
-  
+
   it 'should support defining the process page navigate method' do
     custom_method_called = false
     Watirmark::ProcessPage.navigate_method_default = Proc.new { custom_method_called = true }
-    @processpagetest.a.should == 'a'
-    custom_method_called.should == false
-    @processpagetest.b.should == 'b'
-    custom_method_called.should == true
+    expect(@processpagetest.a).to eq('a')
+    expect(custom_method_called).to eq(false)
+    expect(@processpagetest.b).to eq('b')
+    expect(custom_method_called).to eq(true)
   end
 
   it 'should support defining the process page submit method' do
     process_page = @processpagealias.process_page('page 1')
-    process_page.alias.should == ['page a', 'page b']
+    expect(process_page.alias).to eq(['page a', 'page b'])
   end
-  
+
   it 'should be able to report all process pages' do
-    @processpage.process_pages[0].name.should == ''
-    @processpage.process_pages[1].name.should == 'page 1'
-    @processpage.process_pages[2].name.should == 'page 2'
-    @processpage.process_pages.size.should == 3
+    expect(@processpage.process_pages[0].name).to eq('')
+    expect(@processpage.process_pages[1].name).to eq('page 1')
+    expect(@processpage.process_pages[2].name).to eq('page 2')
+    expect(@processpage.process_pages.size).to eq(3)
   end
-  
+
   it 'should include process page keywords in subclasses' do
-    @processpagesubclass.process_pages[0].name.should == ''
-    @processpagesubclass.process_pages[1].name.should == 'page 1'
-    @processpagesubclass.process_pages[2].name.should == 'page 2'
-    @processpagesubclass.process_pages[3].name.should == ''
-    @processpagesubclass.process_pages[4].name.should == 'page 3'
-    @processpagesubclass.process_pages.size.should == 5
-    @processpagesubclass.keywords.should == [:a, :b, :c]
+    expect(@processpagesubclass.process_pages[0].name).to eq('')
+    expect(@processpagesubclass.process_pages[1].name).to eq('page 1')
+    expect(@processpagesubclass.process_pages[2].name).to eq('page 2')
+    expect(@processpagesubclass.process_pages[3].name).to eq('')
+    expect(@processpagesubclass.process_pages[4].name).to eq('page 3')
+    expect(@processpagesubclass.process_pages.size).to eq(5)
+    expect(@processpagesubclass.keywords).to eq([:a, :b, :c])
   end
 
   it 'should honor overriding default process page behavior' do
-    @processpagesubclass.c.should == 'c'
-    @processpagesubclass.class.instance_variable_get(:@process_page_active_page_method).should_not be_kind_of(Proc)
-    @processpagesubclass.class.instance_variable_get(:@process_page_navigate_method).should_not be_kind_of(Proc)
-    @processpagesubclass.class.instance_variable_get(:@process_page_submit_method).should_not be_kind_of(Proc)
+    expect(@processpagesubclass.c).to eq('c')
+    expect(@processpagesubclass.class.instance_variable_get(:@process_page_active_page_method)).not_to be_kind_of(Proc)
+    expect(@processpagesubclass.class.instance_variable_get(:@process_page_navigate_method)).not_to be_kind_of(Proc)
+    expect(@processpagesubclass.class.instance_variable_get(:@process_page_submit_method)).not_to be_kind_of(Proc)
 
-    @processpagecustomnav.d.should == 'd'
-    @processpagecustomnav.class.instance_variable_get(:@process_page_active_page_method).should be_kind_of(Proc)
-    @processpagecustomnav.class.instance_variable_get(:@process_page_navigate_method).should be_kind_of(Proc)
-    @processpagecustomnav.class.instance_variable_get(:@process_page_submit_method).should  be_kind_of(Proc)
+    expect(@processpagecustomnav.d).to eq('d')
+    expect(@processpagecustomnav.class.instance_variable_get(:@process_page_active_page_method)).to be_kind_of(Proc)
+    expect(@processpagecustomnav.class.instance_variable_get(:@process_page_navigate_method)).to be_kind_of(Proc)
+    expect(@processpagecustomnav.class.instance_variable_get(:@process_page_submit_method)).to be_kind_of(Proc)
   end
 end
 

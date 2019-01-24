@@ -25,7 +25,7 @@ module HookHelper
         Watirmark.logger.warn(e.backtrace)
       end
 
-      [data, 'image/png']
+      [data, 'image/png;base64']
     end
 
     def serialize_models

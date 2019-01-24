@@ -7,7 +7,7 @@ describe Watirmark::Session do
   end
 
   before :each do
-    Watirmark::Session.instance.closebrowser
+#    Watirmark::Session.instance.closebrowser
     @config.reload
   end
 
@@ -16,7 +16,7 @@ describe Watirmark::Session do
     b = session.openbrowser
     b.goto "file://#{@html}"
     session.closebrowser
-    b.instance_variable_get('@closed').should be true
+    expect(b.instance_variable_get('@closed')).to eq(true)
   end
 
   specify 'does not run headless when headless set to false' do
@@ -24,9 +24,9 @@ describe Watirmark::Session do
     session = Watirmark::Session.instance
     b = session.openbrowser
     b.goto "file://#{@html}"
-    b.title.should == "Controller Page"
-    b.instance_variable_get('@closed').should be false
-    session.instance_variable_get('@headless').should be_nil
+    expect(b.title == "Controller Page").to be true
+    expect(b.instance_variable_get('@closed')).to eq(false)
+    expect(session.instance_variable_get('@headless')).to be_nil
   end
 
   # CI can not use chrome; must verify locally
@@ -37,7 +37,7 @@ describe Watirmark::Session do
       b = session.newsession
       b.goto "file://#{@html}"
       session.closebrowser
-      b.instance_variable_get('@closed').should be true
+      expect(b.instance_variable_get('@closed')).to eq(true)
     end
 
     # Have to use chrome; headless doesn't always play well with Firefox
@@ -47,9 +47,9 @@ describe Watirmark::Session do
       session = Watirmark::Session.instance
       b = session.openbrowser
       b.goto "file://#{@html}"
-      b.title.should == "Controller Page"
-      b.instance_variable_get('@closed').should be false
-      session.instance_variable_get('@headless').should_not be_nil
+      expect(b.title).to eq("Controller Page")
+      expect(b.instance_variable_get('@closed')).to eq(false)
+      expect(session.instance_variable_get('@headless')).not_to be_nil
     end
   end
 
